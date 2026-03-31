@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dollies Checkout Sheet</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #e8eaed;
+  font-family: Arial, sans-serif;
+  padding: 28px 20px;
+  min-height: 100vh;
+}
+
+.toolbar {
+  max-width: 1020px;
+  margin: 0 auto 14px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-print {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 22px;
+  background: #1a1a2e;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: Arial, sans-serif;
+}
+.btn-print:hover { background: #2d2d4e; }
+
+.sheet {
+  max-width: 1020px;
+  margin: 0 auto;
+  background: #fff;
+  border: 1px solid #d0d3d8;
+  padding: 40px 48px 48px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+}
+
+/* Header */
+.header-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.main-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1a1a2e;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  line-height: 1;
+}
+
+.sub-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: #4a7fc1;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-top: 6px;
+}
+
+.date-block { text-align: right; }
+
+.date-lbl {
+  font-size: 10px;
+  font-weight: 700;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+}
+
+.date-field {
+  border: none;
+  border-bottom: 1.5px solid #aaa;
+  color: #1a1a2e;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: Arial, sans-serif;
+  padding: 3px 4px;
+  outline: none;
+  width: 170px;
+  text-align: right;
+  background: transparent;
+  cursor: pointer;
+}
+.date-field:focus { border-bottom-color: #4a7fc1; }
+
+.divider-line {
+  height: 2px;
+  background: #1a1a2e;
+  margin: 14px 0 0;
+}
+
+/* TABLE */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+col.c-name  { width: auto; }
+col.c-dolly { width: 130px; }
+col.c-bags  { width: 55px; }
+col.c-gap   { width: 48px; }
+
+thead tr th {
+  font-size: 10px;
+  font-weight: 700;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  padding: 10px 10px 7px;
+  border-bottom: 1px solid #bbb;
+  text-align: left;
+}
+
+th.gap-h { border-bottom: none; position: relative; }
+th.gap-h::after {
+  content: '';
+  position: absolute;
+  top: 8px; bottom: 0; left: 50%;
+  width: 1px;
+  background: #d0d3d8;
+}
+
+tbody tr td {
+  padding: 0;
+  height: 40px;
+  border-bottom: 1px solid #e2e5ea;
+}
+
+tbody tr:nth-child(even) td { background: #f5f7fa; }
+tbody tr:nth-child(even) td.gap-cell { background: #fff; }
+
+td.gap-cell {
+  border-bottom: none;
+  background: #fff !important;
+  position: relative;
+}
+td.gap-cell::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0; left: 50%;
+  width: 1px;
+  background: #d0d3d8;
+}
+
+.cell-input {
+  width: 100%;
+  height: 40px;
+  border: none;
+  background: transparent;
+  color: #1a1a2e;
+  font-size: 13.5px;
+  font-family: Arial, sans-serif;
+  padding: 0 10px;
+  outline: none;
+  display: block;
+}
+.cell-input:focus { background: #eef3fb; }
+
+/* Footer */
+.sheet-footer {
+  margin-top: 28px;
+  padding-top: 12px;
+  border-top: 1px solid #e0e3e8;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-txt { font-size: 10px; color: #aaa; letter-spacing: .5px; text-transform: uppercase; }
+.footer-count { font-size: 11px; color: #999; }
+.count-val { color: #4a7fc1; font-weight: 700; }
+
+@media print {
+  body { background: white; padding: 0; }
+  .toolbar { display: none; }
+  .sheet { box-shadow: none; border: 1px solid #ccc; padding: 28px 36px; max-width: 100%; }
+  .cell-input:focus { background: transparent; }
+  tbody tr:nth-child(even) td { background: #f5f7fa; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <button class="btn-print" onclick="window.print()">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+      <rect x="3" y="6" width="10" height="7" rx="1" stroke="white" stroke-width="1.5"/>
+      <path d="M5 6V2h6v4" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+      <rect x="5" y="9" width="6" height="1" rx=".5" fill="white"/>
+      <rect x="5" y="11" width="4" height="1" rx=".5" fill="white"/>
+    </svg>
+    PRINT
+  </button>
+</div>
+
+<div class="sheet">
+
+  <div class="header-top">
+    <div class="title-block">
+      <div class="main-title">Dollies Checkout Sheet</div>
+      <div class="sub-title">Capital Shipping Sheet</div>
+    </div>
+    <div class="date-block">
+      <div class="date-lbl">Date</div>
+      <input class="date-field" type="date" id="dateField"/>
+    </div>
+  </div>
+
+  <div class="divider-line"></div>
+
+  <table>
+    <colgroup>
+      <col class="c-name"/>
+      <col class="c-dolly"/>
+      <col class="c-bags"/>
+      <col class="c-gap"/>
+      <col class="c-name"/>
+      <col class="c-dolly"/>
+      <col class="c-bags"/>
+    </colgroup>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Dolly Number</th>
+        <th>Bags</th>
+        <th class="gap-h"></th>
+        <th>Name</th>
+        <th>Dolly Number</th>
+        <th>Bags</th>
+      </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+  </table>
+
+  <div class="sheet-footer">
+    <span class="footer-txt">Dollies Checkout Sheet &mdash; Official Record</span>
+    <span class="footer-count">Entries: <span class="count-val" id="counter">0</span></span>
+  </div>
+
+</div>
+
+<script>
+  const tbody = document.getElementById('tbody');
+  for (let i = 0; i < 13; i++) {
+    const tr = document.createElement('tr');
+    tr.innerHTML =
+      '<td><input class="cell-input name-f" type="text"/></td>' +
+      '<td><input class="cell-input" type="text"/></td>' +
+      '<td><input class="cell-input" type="text"/></td>' +
+      '<td class="gap-cell"></td>' +
+      '<td><input class="cell-input name-f" type="text"/></td>' +
+      '<td><input class="cell-input" type="text"/></td>' +
+      '<td><input class="cell-input" type="text"/></td>';
+    tbody.appendChild(tr);
+  }
+
+  document.addEventListener('input', () => {
+    const filled = [...document.querySelectorAll('.name-f')].filter(f => f.value.trim()).length;
+    document.getElementById('counter').textContent = filled;
+  });
+</script>
+</body>
+</html>
